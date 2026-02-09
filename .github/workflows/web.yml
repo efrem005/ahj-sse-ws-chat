@@ -31,14 +31,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22.14.0
-          cache: 'yarn'
-      - run: corepack enable
-      - run: corepack prepare yarn@1.22.19 --activate
-      - run: yarn install --frozen-lockfile
-      - run: yarn build
+          cache: 'npm'
+      - run: npm install
+      - run: npm run build
         env:
-          FETCH_URL: ${{secret.FETCH_URL}}
-          WEBSOCKET_URL: ${{secret.WEBSOCKET_URL}}
+          FETCH_URL: ${{ secrets.FETCH_URL }}
+          WEBSOCKET_URL: ${{ secrets.WEBSOCKET_URL }}
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
