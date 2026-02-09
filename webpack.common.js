@@ -1,6 +1,8 @@
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const webpack = require('webpack');
+require('dotenv').config();
 
 module.exports = {
   target: 'web',
@@ -51,6 +53,14 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: '[name].css',
       chunkFilename: '[id].css',
+    }),
+    new webpack.DefinePlugin({
+      'process.env.FETCH_URL': JSON.stringify(
+        process.env.FETCH_URL || 'http://localhost:3000',
+      ),
+      'process.env.WEBSOCKET_URL': JSON.stringify(
+        process.env.WEBSOCKET_URL || 'ws://localhost:3000',
+      ),
     }),
   ],
 };
