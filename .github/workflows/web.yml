@@ -19,7 +19,20 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  eslint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run lint
   build:
+    needs: [eslint]
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -30,9 +43,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22.14.0
+          node-version: 20
           cache: 'npm'
-      - run: npm install
+      - run: npm ci
       - run: npm run build
         env:
           FETCH_URL: ${{ secrets.FETCH_URL }}
